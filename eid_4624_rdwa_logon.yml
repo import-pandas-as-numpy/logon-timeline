@@ -1,0 +1,47 @@
+---
+title: RD Web Access - An account was successfully logged on
+group: Logon
+description: An account was successfully logged on at the RD Web Access server
+date: 2023-07-03
+version: 1.0
+authors:
+  - Catarina de Faria
+
+
+kind: evtx
+level: info
+status: stable
+timestamp: Event.System.TimeCreated
+
+
+fields:
+  - name: Hostname
+    to: Event.System.Computer
+  - name: Event ID
+    to: Event.System.EventID
+  - name: Record ID
+    to: Event.System.EventRecordID
+  - name: User
+    to: Event.EventData.TargetUserName
+  - name: SID
+    to: Event.EventData.TargetUserSid
+  - name: Logon Type
+    to: Event.EventData.LogonType
+  - name: Workstation
+    to: Event.EventData.WorkstationName
+  - name: IP Address
+    to: Event.EventData.IpAddress
+  - name: Channel
+    to: Event.System.Channel
+
+filter:
+  condition: successful_logon and security_channel and rd_web_access 
+
+  successful_logon:
+    Event.System.EventID: 4624
+  security_channel:
+    Event.System.Channel: Security
+  rd_web_access:
+    Event.EventData.SubjectUserName: RDWebAccess
+
+

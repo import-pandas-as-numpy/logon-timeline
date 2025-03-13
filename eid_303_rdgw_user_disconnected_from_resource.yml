@@ -1,0 +1,38 @@
+
+---
+title: RD Gateway - A user disconnected from a resource
+group: Logon
+description: A user disconnected from a network resource. Before the user disconnected, the number of bytes transferred/received and the client session duration were registered.
+date: 2023-07-03
+version: 1.0
+authors: 
+  - Catarina de Faria
+
+
+kind: evtx
+level: info
+status: stable
+timestamp: Event.System.TimeCreated
+
+
+fields:
+  - name: Hostname
+    to: Event.System.Computer
+  - name: Event ID
+    to: Event.System.EventID
+  - name: Record ID
+    to: Event.System.EventRecordID
+  - name: User
+    to: Event.UserData.EventInfo.Username
+  - name: IP Address
+    to: Event.UserData.EventInfo.IpAddress
+  - name: Channel
+    to: Event.System.Channel
+
+filter:
+  condition: rd_rap
+
+  rd_rap:
+      Event.System.EventID: 303
+      Event.System.Channel: Microsoft-Windows-TerminalServices-Gateway/Operational
+

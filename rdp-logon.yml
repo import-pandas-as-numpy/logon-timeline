@@ -1,0 +1,47 @@
+---
+title: RDP Logon
+group: Logon
+description: An RDP based logon.
+authors:
+  - FranticTyping
+
+
+kind: evtx
+level: info
+status: stable
+timestamp: Event.System.TimeCreated
+
+
+fields:
+  - name: Hostname
+    to: Event.System.Computer
+  - name: Event ID
+    to: Event.System.EventID
+  - name: Record ID
+    to: Event.System.EventRecordID
+  - name: User
+    to: Event.EventData.TargetUserName
+  - name: SID
+    to: Event.EventData.TargetUserSid
+  - name: Logon Type
+    to: Event.EventData.LogonType
+  - name: Workstation
+    to: Event.EventData.WorkstationName
+  - name: IP Address
+    to: Event.EventData.IpAddress
+  - name: Channel
+    to: Event.System.Channel
+
+
+filter:
+  condition: rdp and not local_ips_or_machine_accounts
+
+  rdp:
+    Event.System.EventID: 4624
+    Event.EventData.LogonType: 10
+  local_ips_or_machine_accounts:
+    - Event.EventData.IpAddress:
+        - '-'
+        - 127.0.0.1
+        - ::1
+    - Event.EventData.TargetUserName: $*

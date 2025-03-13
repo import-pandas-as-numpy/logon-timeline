@@ -1,0 +1,36 @@
+---
+title: RD Gateway - RD CAP requirements met
+group: Logon
+description: The Resource Authorization Policy requirements were met, the user was authorized to connect to the resource
+date: 2023-07-03
+version: 1.0
+authors: 
+  - Catarina de Faria
+
+
+kind: evtx
+level: info
+status: stable
+timestamp: Event.System.TimeCreated
+
+
+fields:
+  - name: Hostname
+    to: Event.System.Computer
+  - name: Event ID
+    to: Event.System.EventID
+  - name: Record ID
+    to: Event.System.EventRecordID
+  - name: User
+    to: Event.UserData.EventInfo.Username
+  - name: IP Address
+    to: Event.UserData.EventInfo.IpAddress
+  - name: Channel
+    to: Event.System.Channel
+
+filter:
+  condition: rd_cap
+
+  rd_cap:
+      Event.System.EventID: 200
+      Event.System.Channel: Microsoft-Windows-TerminalServices-Gateway/Operational

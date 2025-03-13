@@ -1,0 +1,38 @@
+title: RDP Session Connected
+group: Logon
+description: User has connected to an RDP session
+authors:
+  - ElizaBolton
+
+
+kind: evtx
+level: critical
+status: stable
+timestamp: Event.System.TimeCreated
+
+
+fields:
+  - name: Hostname
+    to: Event.System.Computer
+  - name: Event ID
+    to: Event.System.EventID
+  - name: Record ID
+    to: Event.System.EventRecordID
+  - name: IP Address
+    to: Event.UserData.EventXML.Address
+  - name: User
+    to: Event.UserData.EventXML.User
+  - name: Channel
+    to: Event.System.Channel
+
+    
+filter:
+  condition: RDP_RELATED and not LOCAL
+
+
+  RDP_RELATED:
+    Event.System.EventID: 25
+    Event.System.Provider: Microsoft-Windows-TerminalServices-LocalSessionManager
+  LOCAL: 
+    Event.UserData.EventXML.Address: "LOCAL"
+    

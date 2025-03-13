@@ -1,0 +1,43 @@
+---
+title: Interactive Logon
+group: Logon
+description: An interactive logon.
+authors:
+  - Sudorem
+
+
+kind: evtx
+level: info
+status: stable
+timestamp: Event.System.TimeCreated
+
+
+fields:
+  - name: Hostname
+    to: Event.System.Computer
+  - name: Event ID
+    to: Event.System.EventID
+  - name: Record ID
+    to: Event.System.EventRecordID
+  - name: User
+    to: Event.EventData.TargetUserName
+  - name: SID
+    to: Event.EventData.TargetUserSid
+  - name: Logon Type
+    to: Event.EventData.LogonType
+  - name: Workstation
+    to: Event.EventData.WorkstationName
+  - name: IP Address
+    to: Event.EventData.IpAddress
+  - name: Channel
+    to: Event.System.Channel
+
+
+filter:
+  condition: interactive and not local_ips_or_machine_accounts
+
+  interactive:
+    Event.System.EventID: 4624
+    Event.EventData.LogonType: 2
+  local_ips_or_machine_accounts:
+    Event.EventData.TargetUserName: $*
